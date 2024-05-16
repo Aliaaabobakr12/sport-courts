@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
     address VARCHAR(255) NOT NULL,
-    phone VARCHAR(11) NOT NULL
+    phone VARCHAR(11) NOT NULL,
+    is_admin BOOLEAN DEFAULT FALSE,
 );

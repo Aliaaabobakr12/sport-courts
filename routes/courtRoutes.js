@@ -6,14 +6,16 @@ const {
   createCourt,
   getCourtById,
 } = require("../controllers/courtController");
+const { authorizeUser } = require("../middleware/authorizeMiddleware");
+const { authenticateUser } = require("../middleware/authMiddleware");
 
 // Route to get all courts
-router.get("/", getAllCourts);
+router.get("/", authenticateUser, getAllCourts);
 
 // Route to create a new court
-router.post("/", createCourt);
+router.post("/", authenticateUser, authorizeUser, createCourt);
 
 // Route to get court by ID
-router.get("/:courtId", getCourtById);
+router.get("/:courtId", authenticateUser, getCourtById);
 
 module.exports = router;

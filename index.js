@@ -9,6 +9,7 @@ const morgan = require("morgan");
 const userRoutes = require("./routes/userRoutes");
 const reservationRoutes = require("./routes/reservationRoutes");
 const courtRoutes = require("./routes/courtRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 // database
 const pool = require("./config/db");
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/courts", courtRoutes);
+app.use("/api/auth", authRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

@@ -13,15 +13,32 @@ class User {
   }
 
   static async createUser(userData) {
-    const { username, email, password, address, phone } = userData;
+    const { first_name, last_name, email, password, address, phone, is_admin } =
+      userData;
     try {
       const { rows } = await pool.query(
-        "INSERT INTO users (username, email, password, address, phone) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-        [username, email, password, address, phone]
+        "INSERT INTO users (first_name, last_name, email, password, address, phone, is_admin) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+        [first_name, last_name, email, password, address, phone, is_admin]
       );
       return rows[0];
     } catch (error) {
       console.error("Error creating user:", error);
+      throw error;
+    }
+  }
+
+  static async getUserByEmail(email) {
+    try {
+      const { rows } = await pool.query(
+        "SELECT * FROM users WHERE email = $1",
+        [email]
+      );
+      if (rows.length === 0) {
+        return null;
+      }
+      return rows[0];
+    } catch (error) {
+      console.error("Error fetching user by email:", error);
       throw error;
     }
   }

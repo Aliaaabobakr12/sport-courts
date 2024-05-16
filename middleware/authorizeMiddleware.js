@@ -1,7 +1,7 @@
 const authorizeUser = (req, res, next) => {
   // Check user role or permissions to determine authorization
   // For example, if user role is 'admin', they have access, otherwise deny access
-  if (req.user.role !== "admin") {
+  if (!req.user.is_admin) {
     return res.status(403).json({ message: "Forbidden" });
   }
   next();

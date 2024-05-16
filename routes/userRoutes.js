@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const { getAllUsers, getUserById } = require("../controllers/userController");
+const { authenticateUser } = require("../middleware/authMiddleware");
+const { authorizeUser } = require("../middleware/authorizeMiddleware");
 
 // Route to get all users
-router.get("/", getAllUsers);
+router.get("/", authenticateUser, authorizeUser, getAllUsers);
 
 // Route to get user by ID
-router.get("/:userId", getUserById);
+router.get("/:userId", authenticateUser, authorizeUser, getUserById);
 
 module.exports = router;

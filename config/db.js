@@ -2,6 +2,7 @@ const { Pool } = require("pg");
 const fs = require("fs");
 const path = require("path");
 
+// Load environment variables
 const pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -9,6 +10,9 @@ const pool = new Pool({
   port: process.env.DB_PORT,
   database: process.env.DB_NAME,
 });
+
+// Create tables in the database using SQL queries, we uncommented this code to create the tables in the database
+// once the tables are created we can comment this code again
 
 // async function createTables() {
 //   try {
@@ -28,9 +32,10 @@ const pool = new Pool({
 //     const usersTableSql = fs.readFileSync(usersTablePath, "utf8");
 //     const reservationsTableSql = fs.readFileSync(reservationsTablePath, "utf8");
 //     const courtsTableSql = fs.readFileSync(courtsTablePath, "utf8");
+
 //     await pool.query(usersTableSql);
-//     await pool.query(courtsTableSql);
 //     await pool.query(reservationsTableSql);
+//     await pool.query(courtsTableSql);
 
 //     console.log("Tables created successfully");
 //   } catch (error) {
@@ -41,7 +46,5 @@ const pool = new Pool({
 // createTables().then(() => {
 //   // After tables are created, you can close the pool
 //   pool.end();
-
 // });
-
 module.exports = pool;

@@ -1,3 +1,5 @@
+-- This file is used to create the users table in the database, this syntax is for PostgreSQL
+
 CREATE TABLE IF NOT EXISTS users (
     user_id SERIAL PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
@@ -6,5 +8,5 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(100) NOT NULL,
     address VARCHAR(255) NOT NULL,
     phone VARCHAR(11) NOT NULL,
-    is_admin BOOLEAN DEFAULT FALSE,
+    is_admin BOOLEAN DEFAULT FALSE
 );

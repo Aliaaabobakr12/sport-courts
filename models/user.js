@@ -1,8 +1,10 @@
 const pool = require("../config/db");
 
+// User model
 class User {
   // Methods to interact with the 'users' table
   static async getAllUsers() {
+    // Call the query method in the pool object to select all users from the users table in postgreSQL database
     try {
       const { rows } = await pool.query("SELECT * FROM users");
       return rows;
@@ -12,7 +14,9 @@ class User {
     }
   }
 
+  // Static method to create a new user
   static async createUser(userData) {
+    // Destructure the userData object to get the first_name, last_name, email, password, address, phone, and is_admin
     const { first_name, last_name, email, password, address, phone, is_admin } =
       userData;
     try {
@@ -27,6 +31,7 @@ class User {
     }
   }
 
+  // Static method to get a user by email
   static async getUserByEmail(email) {
     try {
       const { rows } = await pool.query(
@@ -43,6 +48,7 @@ class User {
     }
   }
 
+  // Static method to get a user by ID
   static async getUserById(userId) {
     try {
       const { rows } = await pool.query(

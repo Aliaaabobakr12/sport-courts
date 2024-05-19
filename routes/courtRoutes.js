@@ -1,11 +1,13 @@
 // routes/courtRoutes.js
 const express = require("express");
 const router = express.Router();
+// Import the court controller
 const {
   getAllCourts,
   createCourt,
   getCourtById,
 } = require("../controllers/courtController");
+// Import the authorize middleware
 const { authorizeUser } = require("../middleware/authorizeMiddleware");
 const { authenticateUser } = require("../middleware/authMiddleware");
 

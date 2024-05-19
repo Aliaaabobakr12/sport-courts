@@ -1,11 +1,12 @@
-// middleware/authMiddleware.js
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
+// Middleware to authenticate user which is should be excuted before the route handler
 const authenticateUser = async (req, res, next) => {
   try {
     // Check if Authorization header is present
     const authHeader = req.headers.authorization;
+    // The authentication token is started with "Bearer " so we need to check if it is present
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ message: "Unauthorized" });
     }

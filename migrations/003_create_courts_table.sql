@@ -1,3 +1,5 @@
+-- this file is used to create the courts table in the database
+
 CREATE TABLE IF NOT EXISTS courts (
     court_id SERIAL PRIMARY KEY,
     court_type VARCHAR(50) NOT NULL,

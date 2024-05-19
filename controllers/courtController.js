@@ -1,7 +1,9 @@
 const Court = require("../models/court");
 
+// Get all courts
 const getAllCourts = async (req, res) => {
   try {
+    // Call the static method in the Court model
     const courts = await Court.getAllCourts();
     res.json(courts);
   } catch (error) {
@@ -10,8 +12,10 @@ const getAllCourts = async (req, res) => {
   }
 };
 
+// Create a new court accessed only by admin
 const createCourt = async (req, res) => {
   try {
+    // Call the static method in the Court model
     const newCourt = await Court.createCourt(req.body);
     res.status(201).json(newCourt);
   } catch (error) {
@@ -20,10 +24,14 @@ const createCourt = async (req, res) => {
   }
 };
 
+// Get a court by id
 const getCourtById = async (req, res) => {
+  // Extract the court id from the request parameters
   const courtId = req.params.courtId;
   try {
+    // Call the static method in the Court model
     const court = await Court.getCourtById(courtId);
+    // If the court is not found, return an error
     if (!court) {
       return res.status(404).json({ message: "Court not found" });
     }

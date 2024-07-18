@@ -4,7 +4,8 @@ const Court = require("../models/court");
 const getAllCourts = async (req, res) => {
   try {
     // Call the static method in the Court model
-    const courts = await Court.getAllCourts();
+    const { court_type, location } = req.query;
+    const courts = await Court.getAllCourts(court_type, location);
     res.json(courts);
   } catch (error) {
     console.error("Error getting courts:", error);

@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS courts (
     court_type VARCHAR(50) NOT NULL,
     with_coach BOOLEAN NOT NULL,
     with_tools BOOLEAN NOT NULL,
-    court_address VARCHAR(255) NOT NULL
+    court_address VARCHAR(255) NOT NULL,
+    price NUMERIC(10, 2) NOT NULL
 );

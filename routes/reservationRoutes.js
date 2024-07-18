@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   getAllReservations,
-  createReservaion,
+  createReservation,
   getReservationById,
   deleteReservation,
   getReservationByUserId,
@@ -14,7 +14,7 @@ const { authorizeUser } = require("../middleware/authorizeMiddleware");
 router.get("/", authenticateUser, authorizeUser, getAllReservations);
 
 // Route to create a new reservation
-router.post("/", authenticateUser, createReservaion);
+router.post("/", authenticateUser, createReservation);
 
 // Route to get reservation by ID
 router.get("/:reservationId", authenticateUser, getReservationById);

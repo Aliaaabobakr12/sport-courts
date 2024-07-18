@@ -11,9 +11,6 @@ const pool = new Pool({
   database: process.env.DB_NAME,
 });
 
-// Create tables in the database using SQL queries, we uncommented this code to create the tables in the database
-// once the tables are created we can comment this code again
-
 // async function createTables() {
 //   try {
 //     const usersTablePath = path.join(
@@ -34,8 +31,8 @@ const pool = new Pool({
 //     const courtsTableSql = fs.readFileSync(courtsTablePath, "utf8");
 
 //     await pool.query(usersTableSql);
-//     await pool.query(reservationsTableSql);
 //     await pool.query(courtsTableSql);
+//     await pool.query(reservationsTableSql);
 
 //     console.log("Tables created successfully");
 //   } catch (error) {

@@ -13,7 +13,7 @@ class Reservation {
 
   static async createReservation(reservationData) {
     const {
-      user_id,
+      id,
       court_id,
       price,
       timeslot_start,
@@ -24,8 +24,8 @@ class Reservation {
     } = reservationData;
     try {
       const { rows: reserved_court } = await pool.query(
-        "SELECT * FROM reservations WHERE court_id = $1 AND date_of_reservation = $2",
-        [court_id, date_of_reservation]
+        "SELECT * FROM reservations WHERE id = $1 AND date_of_reservation = $2",
+        [id, date_of_reservation]
       );
 
       const isCourtReserved = reserved_court.some(
@@ -42,9 +42,9 @@ class Reservation {
       const {
         rows: [newReservation],
       } = await pool.query(
-        "INSERT INTO reservations (user_id, court_id, price, timeslot_start, timeslot_end, date_of_reservation, with_coach, with_tools) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+        "INSERT INTO reservations (id, court_id, price, timeslot_start, timeslot_end, date_of_reservation, with_coach, with_tools) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
         [
-          user_id,
+          id,
           court_id,
           price,
           timeslot_start,
@@ -66,10 +66,9 @@ class Reservation {
     try {
       const {
         rows: [reservation],
-      } = await pool.query(
-        "SELECT * FROM reservations WHERE reservation_id = $1",
-        [reservationId]
-      );
+      } = await pool.query("SELECT * FROM reservations WHERE id = $1", [
+        reservationId,
+      ]);
 
       if (!reservation) {
         return null;
@@ -85,7 +84,7 @@ class Reservation {
   static async getReservationByUserId(userId) {
     try {
       const { rows } = await pool.query(
-        "SELECT * FROM reservations WHERE user_id = $1",
+        "SELECT * FROM reservations WHERE id = $1",
         [userId]
       );
 
@@ -103,10 +102,9 @@ class Reservation {
     try {
       const {
         rows: [reservation],
-      } = await pool.query(
-        "SELECT * FROM reservations WHERE reservation_id = $1",
-        [reservationId]
-      );
+      } = await pool.query("SELECT * FROM reservations WHERE id = $1", [
+        reservationId,
+      ]);
 
       if (!reservation) {
         return { message: "Reservation not found" };
@@ -114,7 +112,7 @@ class Reservation {
 
       const diffInHours = this.calculateHoursDifference(reservation.time_stamp);
       if (diffInHours <= 4) {
-        await pool.query("DELETE FROM reservations WHERE reservation_id = $1", [
+        await pool.query("DELETE FROM reservations WHERE id = $1", [
           reservationId,
         ]);
         return { message: "Reservation deleted successfully" };
@@ -134,13 +132,13 @@ class Reservation {
     try {
       const {
         rows: [user],
-      } = await pool.query("SELECT * FROM users WHERE user_id = $1", [
-        reservation.user_id,
+      } = await pool.query("SELECT * FROM users WHERE id = $1", [
+        reservation.id,
       ]);
       const {
         rows: [court],
-      } = await pool.query("SELECT * FROM courts WHERE court_id = $1", [
-        reservation.court_id,
+      } = await pool.query("SELECT * FROM courts WHERE id = $1", [
+        reservation.id,
       ]);
 
       if (!user || !court) {
@@ -148,7 +146,7 @@ class Reservation {
       }
 
       return {
-        reservation_id: reservation.reservation_id,
+        id: reservation.id,
         user: {
           name: `${user.first_name} ${user.last_name}`,
           email: user.email,
@@ -156,8 +154,8 @@ class Reservation {
           phone_number: user.phone,
         },
         court: {
-          court_type: court.court_type,
-          court_address: court.court_address,
+          type: court.type,
+          address: court.address,
         },
         price: reservation.price,
         timeslot_start: reservation.timeslot_start,

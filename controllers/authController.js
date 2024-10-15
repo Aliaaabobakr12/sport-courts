@@ -22,7 +22,7 @@ const register = async (req, res) => {
     });
 
     // Generate and send JWT if registration is successful
-    const token = jwt.sign({ userId: newUser.user_id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET);
     res.status(201).json({ token });
   } catch (error) {
     // Handle errors
@@ -48,7 +48,7 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "Wrong Password!" });
     }
     // Generate and send JWT if authentication is successful
-    const token = jwt.sign({ userId: user.user_id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
     res.json({ token });
   } catch (error) {
     console.error("Error logging in user:", error);

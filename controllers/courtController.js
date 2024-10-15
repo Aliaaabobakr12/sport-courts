@@ -1,11 +1,22 @@
+const multer = require("multer");
+const path = require("path");
 const Court = require("../models/court");
 
-// Get all courts
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage });
+
 const getAllCourts = async (req, res) => {
   try {
-    // Call the static method in the Court model
-    const { court_type, location } = req.query;
-    const courts = await Court.getAllCourts(court_type, location);
+    const { type, government } = req.query;
+    const courts = await Court.getAllCourts(type, government);
     res.json(courts);
   } catch (error) {
     console.error("Error getting courts:", error);
@@ -13,26 +24,43 @@ const getAllCourts = async (req, res) => {
   }
 };
 
-// Create a new court accessed only by admin
 const createCourt = async (req, res) => {
   try {
-    // Call the static method in the Court model
-    const newCourt = await Court.createCourt(req.body);
+    console.log("Received request body:", req.body);
+    console.log("Received file:", req.file);
+
+    const { name, type, address, price, government } = req.body;
+    const court_image = req.file ? req.file.path : null;
+
+    console.log("Extracted court data:", {
+      name,
+      type,
+      address,
+      price,
+      // court_image,
+      government,
+    });
+
+    const newCourt = await Court.createCourt({
+      name,
+      type,
+      address,
+      price,
+      // court_image,
+      government,
+    });
+
     res.status(201).json(newCourt);
   } catch (error) {
     console.error("Error creating court:", error);
-    res.status(500).send("Server Error");
+    res.status(500).json({ error: error.message });
   }
 };
 
-// Get a court by id
 const getCourtById = async (req, res) => {
-  // Extract the court id from the request parameters
   const courtId = req.params.courtId;
   try {
-    // Call the static method in the Court model
     const court = await Court.getCourtById(courtId);
-    // If the court is not found, return an error
     if (!court) {
       return res.status(404).json({ message: "Court not found" });
     }

@@ -1,17 +1,12 @@
 const pool = require("../config/db");
 
-// Court model
 class Court {
-  // Methods to interact with the 'courts' table
-  // Static method to get all courts
-  static async getAllCourts(court_type, location) {
+  static async getAllCourts(type, government) {
     try {
-      // Call the query method in the pool object to select all courts from the cout's table in postgreSQL database
       const { rows } = await pool.query(
-        `SELECT * FROM courts WHERE court_type = $1 AND court_address = $2`,
-        [court_type, location]
+        `SELECT * FROM courts WHERE type = $1 AND government = $2`,
+        [type, government]
       );
-      // Return the rows from the database
       return rows;
     } catch (error) {
       console.error("Error fetching courts:", error);
@@ -19,16 +14,17 @@ class Court {
     }
   }
 
-  // Static method to create a new court
   static async createCourt(courtData) {
-    // Destructure the courtData object to get the court_type, with_coach, with_tools, and court_address
-    const { court_type, with_coach, with_tools, court_address, price } =
-      courtData;
+    const { name, type, address, price, government } = courtData;
+
+    if (!name) {
+      throw new Error("Court name is required");
+    }
+
     try {
-      // Call the query method in the pool object to insert a new court into the courts table in the postgreSQL database
       const { rows } = await pool.query(
-        "INSERT INTO courts (court_type, with_coach, with_tools, court_address, price) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-        [court_type, with_coach, with_tools, court_address, price]
+        "INSERT INTO courts (name, type, address, price, government) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+        [name, type, address, price, government]
       );
       return rows[0];
     } catch (error) {
@@ -37,15 +33,11 @@ class Court {
     }
   }
 
-  // Static method to get a court by ID
   static async getCourtById(courtId) {
     try {
-      // Call the query method in the pool object to select a court by court_id from the courts table in the postgreSQL database
-      const { rows } = await pool.query(
-        "SELECT * FROM courts WHERE court_id = $1",
-        [courtId]
-      );
-      // Check if the court is not found
+      const { rows } = await pool.query("SELECT * FROM courts WHERE id = $1", [
+        courtId,
+      ]);
       if (rows.length === 0) {
         return { message: "Court not found" };
       }

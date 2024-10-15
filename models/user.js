@@ -51,10 +51,9 @@ class User {
   // Static method to get a user by ID
   static async getUserById(userId) {
     try {
-      const { rows } = await pool.query(
-        "SELECT * FROM users WHERE user_id = $1",
-        [userId]
-      );
+      const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [
+        userId,
+      ]);
       if (rows.length === 0) {
         return null;
       }

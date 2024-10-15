@@ -31,7 +31,7 @@ const getUserById = async (req, res) => {
 };
 
 const getMyInfo = async (req, res) => {
-  const userId = req.user.user_id;
+  const userId = req.user.id;
   try {
     const user = await User.getUserById(userId);
     if (!user) {

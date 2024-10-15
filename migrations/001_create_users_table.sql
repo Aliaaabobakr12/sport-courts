@@ -1,7 +1,7 @@
 -- This file is used to create the users table in the database, this syntax is for PostgreSQL
 
 CREATE TABLE IF NOT EXISTS users (
-    user_id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,

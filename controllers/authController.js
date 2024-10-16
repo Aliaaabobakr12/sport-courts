@@ -18,7 +18,7 @@ const register = async (req, res) => {
       password: hashedPassword,
       address,
       phone,
-      is_admin,
+      is_admin: is_admin || false,
     });
 
     // Generate and send JWT if registration is successful

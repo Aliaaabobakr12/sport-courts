@@ -57,7 +57,9 @@ class User {
       if (rows.length === 0) {
         return null;
       }
-      return rows[0];
+      const { id, first_name, email, last_name, address, phone, is_admin } =
+        rows[0];
+      return { id, first_name, email, last_name, address, phone, is_admin };
     } catch (error) {
       console.error("Error fetching user by ID:", error);
       throw error;

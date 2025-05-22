@@ -53,7 +53,7 @@ This project provides a backend API for a sport court booking system. It is stru
    - Create a `.env` file in the root directory.
    - Add your database URI, secret keys, and other environment-specific variables.
 
-4. Run database migrations (if applicable).
+4. Run database migrations.
 
 5. Start the server:
    ```bash

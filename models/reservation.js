@@ -13,7 +13,7 @@ class Reservation {
 
   static async createReservation(reservationData) {
     const {
-      id,
+      user_id,
       court_id,
       price,
       timeslot_start,
@@ -24,27 +24,20 @@ class Reservation {
     } = reservationData;
     try {
       const { rows: reserved_court } = await pool.query(
-        "SELECT * FROM reservations WHERE id = $1 AND date_of_reservation = $2",
-        [id, date_of_reservation]
+        "SELECT * FROM reservations WHERE court_id = $1 AND date_of_reservation = $2 AND (timeslot_start = $3 OR timeslot_end = $4)",
+        [court_id, date_of_reservation, timeslot_start, timeslot_end]
       );
 
-      const isCourtReserved = reserved_court.some(
-        (court) =>
-          timeslot_start === court.timeslot_start ||
-          timeslot_end === court.timeslot_end ||
-          date_of_reservation === court.date_of_reservation
-      );
-
-      if (isCourtReserved) {
+      if (reserved_court.length > 0) {
         return { message: "Court is already reserved" };
       }
 
       const {
         rows: [newReservation],
       } = await pool.query(
-        "INSERT INTO reservations (id, court_id, price, timeslot_start, timeslot_end, date_of_reservation, with_coach, with_tools) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+        "INSERT INTO reservations (user_id, court_id, price, timeslot_start, timeslot_end, date_of_reservation, with_coach, with_tools) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
         [
-          id,
+          user_id,
           court_id,
           price,
           timeslot_start,
@@ -55,7 +48,7 @@ class Reservation {
         ]
       );
 
-      return this.getReservationDetails(newReservation);
+      return { message: "New reservation booked" };
     } catch (error) {
       console.error("Error creating reservation:", error);
       throw error;
@@ -178,6 +171,27 @@ class Reservation {
       currentTime.getTime() - reservationTime.getTime()
     );
     return diffInMilliseconds / (1000 * 60 * 60);
+  }
+
+  static async getReservationByCourtId(courtId, date_of_reservation) {
+    try {
+      const date = date_of_reservation;
+      const { rows } = await pool.query(
+        "SELECT * FROM reservations WHERE court_id = $1 AND date_of_reservation = $2",
+        [courtId, date]
+      );
+
+      const reservationsByTime = rows.map((reservation) => {
+        return {
+          start: reservation.timeslot_start,
+          end: reservation.timeslot_end,
+        };
+      });
+      return reservationsByTime;
+    } catch (error) {
+      console.error("Error fetching reservation by court ID:", error);
+      throw error;
+    }
   }
 }
 

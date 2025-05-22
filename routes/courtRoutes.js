@@ -32,7 +32,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // GET all courts
-router.get("/", authenticateUser, getAllCourts);
+router.get("/", getAllCourts);
 
 // POST create a new court
 router.post(
@@ -44,6 +44,6 @@ router.post(
 );
 
 // GET a specific court by ID
-router.get("/:courtId", authenticateUser, getCourtById);
+router.get("/:courtId", getCourtById);
 
 module.exports = router;

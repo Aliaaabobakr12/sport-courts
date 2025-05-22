@@ -67,10 +67,31 @@ const deleteReservation = async (req, res) => {
   }
 };
 
+const getReservationByCourtId = async (req, res) => {
+  const courtId = req.params.courtId;
+  const date_of_reservation = req.params.date;
+  try {
+    const reservations = await Reservation.getReservationByCourtId(
+      courtId,
+      date_of_reservation
+    );
+    if (reservations.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No reservations found for this court" });
+    }
+    res.json(reservations);
+  } catch (error) {
+    console.error("Error getting reservations:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
 module.exports = {
   getAllReservations,
   createReservation,
   getReservationById,
   deleteReservation,
   getReservationByUserId,
+  getReservationByCourtId,
 };

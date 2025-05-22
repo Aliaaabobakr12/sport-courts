@@ -6,6 +6,7 @@ const {
   getReservationById,
   deleteReservation,
   getReservationByUserId,
+  getReservationByCourtId,
 } = require("../controllers/reservationController");
 const { authenticateUser } = require("../middleware/authMiddleware");
 const { authorizeUser } = require("../middleware/authorizeMiddleware");
@@ -24,5 +25,7 @@ router.delete("/:reservationId", authenticateUser, deleteReservation);
 
 // Route to get reservation by user ID
 router.get("/user/:userId", authenticateUser, getReservationByUserId);
+
+router.get("/court/:courtId/date/:date", getReservationByCourtId);
 
 module.exports = router;

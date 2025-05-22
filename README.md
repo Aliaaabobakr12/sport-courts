@@ -24,7 +24,6 @@ This project provides a backend API for a sport court booking system. It is stru
 - `uploads/` - Stores uploaded files (e.g., user profile images, court images).
 - `package.json` & `package-lock.json` - Node.js dependencies and scripts.
 
-> **Note:** This file list is incomplete due to API limitations.  
 > [View all files and folders in the repo &rarr;](https://github.com/Aliaaabobakr12/sport-courts/tree/main)
 
 ---

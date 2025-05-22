@@ -34,7 +34,7 @@ This project provides a backend API for a sport court booking system. It is stru
 
 - Node.js (v14 or later)
 - npm
-- (Recommended) MongoDB or your configured database
+- PostgreSQL
 
 ### Installation
 
